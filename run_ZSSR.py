@@ -36,10 +36,10 @@ def main(conf_name, gpu):
         for kernel_file in kernel_files:
             if not os.path.isfile(kernel_file[:-1]):
                 kernel_files_str = '0'
-                print 'no kernel loaded'
+                print('no kernel loaded')
                 break
 
-        print kernel_files
+        print(kernel_files)
 
         # This option uses all the gpu resources efficiently
         if gpu == 'all':
@@ -58,7 +58,7 @@ def main(conf_name, gpu):
                       % (local_dir, input_file, ground_truth_file, kernel_files_str, cur_gpu, conf_name, res_dir))
 
             # Verbose
-            print 'Ran file #%d: %s on GPU %d\n' % (file_ind, input_file, cur_gpu)
+            print('Ran file #%d: %s on GPU %d\n' % (file_ind, input_file, cur_gpu))
 
             # Wait 5 seconds for the previous process to start using GPU. if we wouldn't wait then GPU memory will not
             # yet be taken and all process will start on the same GPU at once and later collapse.
