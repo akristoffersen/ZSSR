@@ -4,3 +4,6 @@ results*/
 # VS files
 *sln
 *pyproj
+__pycache*
+.vs*
+

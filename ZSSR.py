@@ -241,9 +241,9 @@ class ZSSR:
         if (not (1 + self.iter) % self.conf.learning_rate_policy_check_every
                 and self.iter - self.learning_rate_change_iter_nums[-1] > self.conf.min_iters):
             # noinspection PyTupleAssignmentBalance
-            [slope, _], [[var, _], _] = np.polyfit(self.mse_steps[-(self.conf.learning_rate_slope_range /
+            [slope, _], [[var, _], _] = np.polyfit(self.mse_steps[-(self.conf.learning_rate_slope_range //
                                                                     self.conf.run_test_every):],
-                                                   self.mse_rec[-(self.conf.learning_rate_slope_range /
+                                                   self.mse_rec[-(self.conf.learning_rate_slope_range //
                                                                   self.conf.run_test_every):],
                                                    1, cov=True)
 
@@ -297,7 +297,7 @@ class ZSSR:
 
     def train(self):
         # main training loop
-        for self.iter in xrange(self.conf.max_iters):
+        for self.iter in range(self.conf.max_iters):
             # Use augmentation from original input image to create current father.
             # If other scale factors were applied before, their result is also used (hr_fathers_in)
             self.hr_father = random_augment(ims=self.hr_fathers_sources,

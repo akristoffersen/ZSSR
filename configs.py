@@ -51,6 +51,7 @@ class Config:
     save_results = True
     
     # new params to work with binary images
+    input_file_ext = 'bin'  # file extension
     input_image_type = 3    # 1 = single channel image, 3 = three channel image
     image_scale = 40000     # scale to divide down the binary image
 
@@ -151,7 +152,8 @@ LIDAR_CONF.display_test_results = True
 LIDAR_CONF.save_results = True
     
 # new params to work with binary images
-LIDAR_CONF.input_image_type = 3    # 1 = single channel image, 3 = three channel image
+LIDAR_CONF.input_file_ext = 'bin'
+LIDAR_CONF.input_image_type = 1    # 1 = single channel image, 3 = three channel image
 LIDAR_CONF.image_scale = 40000     # scale to divide down the binary image
 
 
