@@ -1,0 +1,6 @@
+test_data*/
+results*/
+
+# VS files
+*sln
+*pyproj

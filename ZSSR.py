@@ -4,7 +4,8 @@ import matplotlib.image as img
 from matplotlib.gridspec import GridSpec
 from configs import Config
 from utils import *
-
+import numpy as np
+from binary_file_ops import write_binary_image
 
 class ZSSR:
     # Basic current state variables initialization / declaration
@@ -122,6 +123,10 @@ class ZSSR:
                 plt.imsave('%s/%s_zssr_%s.png' %
                            (self.conf.result_path, os.path.basename(self.file_name)[:-4], sf_str),
                            post_processed_output, vmin=0, vmax=1)
+                           
+                final_img = np.true_divide(post_processed_output[:,:,0] + post_processed_output[:,:,1] + post_processed_output[:,:,2], 3)
+                write_binary_image('%s/%s_zssr_%s.bin' %
+                           (self.conf.result_path, os.path.basename(self.file_name)[:-4], sf_str), (final_img*self.conf.image_scale))                           
 
             # verbose
             print('** Done training for sf=', sf, ' **')
