@@ -13,8 +13,11 @@ def main(conf_name, gpu):
     if conf_name is None:
         conf = configs.Config()
     else:
-        conf = None
-        exec ('conf = configs.%s' % conf_name)
+        # this code doesn't seem to work so permanently assign the LIDAR_CONF config
+        # conf = None
+        # exec ('conf = configs.%s' % conf_name)
+        conf = configs.LIDAR_CONF
+        
     res_dir = prepare_result_dir(conf)
     local_dir = os.path.dirname(__file__)
 
@@ -66,7 +69,7 @@ def main(conf_name, gpu):
 
         # The other option is just to run sequentially on a chosen GPU.
         else:
-            run_ZSSR_single_input.main(input_file, ground_truth_file, kernel_files_str, gpu, conf_name, res_dir)
+            run_ZSSR_single_input.main(input_file, ground_truth_file, kernel_files_str, gpu, conf, res_dir)
 
 
 if __name__ == '__main__':
