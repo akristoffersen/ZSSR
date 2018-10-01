@@ -106,7 +106,7 @@ X2_REAL_CONF.augment_min_scale = 0.75
 LIDAR_CONF = Config()
 # network meta params
 LIDAR_CONF.python_path = '/home/assafsho/PycharmProjects/network/venv/bin/python2.7'
-LIDAR_CONF.scale_factors = [[9.0, 6.0]]  # list of pairs (vertical, horizontal) for gradual increments in resolution
+LIDAR_CONF.scale_factors = [[18.0, 6.0]]  # list of pairs (vertical, horizontal) for gradual increments in resolution
 LIDAR_CONF.base_change_sfs = []  # list of scales after which the input is changed to be the output (recommended for high sfs)
 LIDAR_CONF.max_iters = 3000
 LIDAR_CONF.min_iters = 256
@@ -120,7 +120,7 @@ LIDAR_CONF.downscale_gt_method = 'cubic'  # when ground-truth given and intermed
 LIDAR_CONF.init_variance = 0.1  # variance of weight initializations, typically smaller when residual learning is on
 LIDAR_CONF.back_projection_iters = [4]  # for each scale num of bp iterations (same length as scale_factors)
 LIDAR_CONF.random_crop = True
-LIDAR_CONF.crop_size = 32
+LIDAR_CONF.crop_size = 24
 LIDAR_CONF.noise_std = 0.0  # adding noise to lr-sons. small for real images, bigger for noisy images and zero for ideal case
 LIDAR_CONF.init_net_for_each_sf = False  # for gradual sr- should we optimize from the last sf or initialize each time?
 
