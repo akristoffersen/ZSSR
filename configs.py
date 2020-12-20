@@ -3,7 +3,7 @@ import os
 
 class Config:
     # network meta params
-    python_path = '/home/assafsho/PycharmProjects/network/venv/bin/python2.7'
+    python_path = '/data/akristoffersen/anaconda/lib/python3.8'
     scale_factors = [[2.0, 2.0]]  # list of pairs (vertical, horizontal) for gradual increments in resolution
     base_change_sfs = []  # list of scales after which the input is changed to be the output (recommended for high sfs)
     max_iters = 3000
@@ -46,12 +46,12 @@ class Config:
     result_path = os.path.dirname(__file__) + '/results'
     create_results_dir = True
     input_path = local_dir = os.path.dirname(__file__) + '/test_data'
-    create_code_copy = True  # save a copy of the code in the results folder to easily match code changes to results
+    create_code_copy = False  # save a copy of the code in the results folder to easily match code changes to results
     display_test_results = True
     save_results = True
     
     # new params to work with binary images
-    input_file_ext = 'bin'  # file extension
+    input_file_ext = 'png'  # file extension
     input_image_type = 3    # 1 = single channel image, 3 = three channel image
     image_scale = 40000     # scale to divide down the binary image
 
@@ -95,7 +95,7 @@ X2_GIVEN_KERNEL_CONF.input_path = os.path.dirname(__file__) + '/kernel_example'
 X2_REAL_CONF = Config()
 X2_REAL_CONF.output_flip = False
 X2_REAL_CONF.back_projection_iters = [0]
-X2_REAL_CONF.input_path = os.path.dirname(__file__) + '/real_example'
+X2_REAL_CONF.input_path = os.path.dirname(__file__) + '/test_data' #'/real_example'
 X2_REAL_CONF.noise_std = 0.0125
 X2_REAL_CONF.augment_allow_rotation = False
 X2_REAL_CONF.augment_scale_diff_sigma = 0

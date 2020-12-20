@@ -10,13 +10,20 @@ import run_ZSSR_single_input
 
 def main(conf_name, gpu):
     # Initialize configs and prepare result dir with date
+
+    print("hi!")
+
     if conf_name is None:
         conf = configs.Config()
     else:
         # this code doesn't seem to work so permanently assign the LIDAR_CONF config
         # conf = None
         # exec ('conf = configs.%s' % conf_name)
-        conf = configs.LIDAR_CONF
+        # conf = configs.LIDAR_CONF
+        if conf_name == "X2_REAL_CONF":
+            conf = configs.X2_REAL_CONF
+        elif conf_name == "X2_GRADUAL_IDEAL_CONF":
+            conf = configs.X2_GRADUAL_IDEAL_CONF
         
     res_dir = prepare_result_dir(conf)
     local_dir = os.path.dirname(__file__)
@@ -24,6 +31,8 @@ def main(conf_name, gpu):
     # We take all png files that are not ground truth
     files = [file_path for file_path in glob.glob('%s/*.%s' % (conf.input_path, conf.input_file_ext))
              if not file_path[-7:-4] == '_gt']
+    print("files", res_dir, local_dir)
+    print(files)
 
     # Loop over all the files
     for file_ind, input_file in enumerate(files):
@@ -75,4 +84,5 @@ def main(conf_name, gpu):
 if __name__ == '__main__':
     conf_str = sys.argv[1] if len(sys.argv) > 1 else None
     gpu_str = sys.argv[2] if len(sys.argv) > 2 else None
+    print("hello!")
     main(conf_str, gpu_str)
