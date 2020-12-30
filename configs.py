@@ -157,12 +157,12 @@ LIDAR_CONF.input_image_type = 1    # 1 = single channel image, 3 = three channel
 LIDAR_CONF.image_scale = 40000     # scale to divide down the binary image
 
 # TODO: build video config
-
+X2_REAL_CONF_VIDEO = Config()
 X2_REAL_CONF_VIDEO.input_file_ext = 'mp4'
 X2_REAL_CONF_VIDEO.input_image_type = 3    # 1 = single channel image, 3 = three channel image
 X2_REAL_CONF_VIDEO.output_flip = False
 X2_REAL_CONF_VIDEO.back_projection_iters = [0]
-X2_REAL_CONF_VIDEO.input_path = os.path.dirname(__file__) + '/test_data' #'/real_example'
+X2_REAL_CONF_VIDEO.input_path = os.path.dirname(__file__) + '/videos'
 X2_REAL_CONF_VIDEO.noise_std = 0.0125
 X2_REAL_CONF_VIDEO.augment_allow_rotation = False
 X2_REAL_CONF_VIDEO.augment_scale_diff_sigma = 0

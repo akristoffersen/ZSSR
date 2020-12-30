@@ -34,9 +34,11 @@ def main(conf_name, gpu):
     print("files:", files)
 
     for file_ind, input_file in enumerate(files):
-        vidcap = cv2.VideoCapture(conf.input_path + input_file)
 
-        vidcap = cv2.VideoCapture(conf.input_path)
+        conf.name = input_file[:-4] + "_frame_1_2x2"
+
+        vidcap = cv2.VideoCapture(input_file)
+
         video_length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT)) - 1
         print("Number of frames: ", video_length)
 
@@ -86,7 +88,7 @@ def main(conf_name, gpu):
 
         # train on the last frame
         new_vid.release()
-
+        conf.name = input_file[:-4] + "_frame_last_2x2"
         run_ZSSR_single_input.main(image, ground_truth_file, kernel_files_str, gpu, conf, res_dir)
 
 
