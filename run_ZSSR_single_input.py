@@ -38,6 +38,7 @@ def main(input_img, ground_truth, kernels, gpu, conf, results_path):
         net = ZSSR.ZSSR(input_img, conf, ground_truth, kernels)
         
     net.run()
+    return net
 
 
 if __name__ == '__main__':

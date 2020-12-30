@@ -11,8 +11,6 @@ import run_ZSSR_single_input
 def main(conf_name, gpu):
     # Initialize configs and prepare result dir with date
 
-    print("hi!")
-
     if conf_name is None:
         conf = configs.Config()
     else:
@@ -84,5 +82,4 @@ def main(conf_name, gpu):
 if __name__ == '__main__':
     conf_str = sys.argv[1] if len(sys.argv) > 1 else None
     gpu_str = sys.argv[2] if len(sys.argv) > 2 else None
-    print("hello!")
     main(conf_str, gpu_str)

@@ -200,3 +200,13 @@ def prepare_result_dir(conf):
             copy(py_file, conf.result_path)
 
     return conf.result_path
+
+# def get_video_frames(conf):
+#     success, image = vidcap.read()
+#     count = 0
+#     success = True
+#     while success:
+#         success, image = vidcap.read()
+#         print('Read a new frame: ', success)
+#         cv2.imwrite(pathOut + "\\frame%d.jpg" % count, image)  # save frame as JPEG file
+#         count += 1
