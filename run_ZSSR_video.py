@@ -9,6 +9,7 @@ import run_ZSSR_single_input
 
 import cv2
 import argparse
+import numpy as np
 
 
 def main(conf_name, gpu):
@@ -30,6 +31,7 @@ def main(conf_name, gpu):
 
     files = [file_path for file_path in glob.glob('%s/*.%s' % (conf.input_path, conf.input_file_ext))
              if not file_path[-7:-4] == '_gt']
+
     print("locations:", res_dir, local_dir)
     print("files:", files)
 
@@ -47,6 +49,11 @@ def main(conf_name, gpu):
 
         # train on frame one
 
+        # TODO: move this conversion to run_ZSSR_single_input
+        coverted_frame_one = cv2.cvtColor(frame_one, cv2.COLOR_BGR2RGB)
+        coverted_frame_one = cv2.normalize(coverted_frame_one, None, 0, 1, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+        print(coverted_frame_one)
+
         # TODO: not implementing ground truth at the moment.
 
         ground_truth_file = '0'
@@ -63,9 +70,9 @@ def main(conf_name, gpu):
         #         kernel_files_str = '0'
         #         print('no kernel loaded')
         #         break
-        kernel_files_str = '0'
 
-        net = run_ZSSR_single_input.main(frame_one, ground_truth_file, kernel_files_str, gpu, conf, res_dir)
+        kernel_files_str = '0'
+        net = run_ZSSR_single_input.main(coverted_frame_one, ground_truth_file, kernel_files_str, gpu, conf, res_dir)
 
         video_name = input_file[:-4] + "_2x2." + "mp4"
         fourcc = cv2.VideoWriter_fourcc(*'MP4V')
@@ -74,16 +81,28 @@ def main(conf_name, gpu):
 
         count = 0
         image = None
+        image_temp = frame_one
 
         while success:
-            success, image = vidcap.read()
+            image = image_temp
+            # convert to float32:
+            image = cv2.normalize(image, None, 0, 1, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
             print('Inference on Frame: ', count)
 
             # have to figure out how to do this
             # I think we have to use forward_pass() in ZSSR.py, but not sure.
-
             scaled_image = net.forward_pass(image)
+
+            # convert to something we can add to new_vid
+            scaled_image = cv2.normalize(scaled_image, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            scaled_image = cv2.cvtColor(scaled_image, cv2.COLOR_RGB_BGR)
+
+            # writing to new video
             new_vid.write(scaled_image)
+
+            success, image_temp = vidcap.read()
             count += 1
 
         # train on the last frame
