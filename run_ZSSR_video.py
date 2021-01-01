@@ -50,34 +50,34 @@ def main(conf_name, gpu):
         # train on frame one
 
         # TODO: move this conversion to run_ZSSR_single_input
-        coverted_frame_one = cv2.cvtColor(frame_one, cv2.COLOR_BGR2RGB)
-        coverted_frame_one = cv2.normalize(coverted_frame_one, None, 0, 1, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
-        print(coverted_frame_one)
+        converted_frame_one = cv2.cvtColor(frame_one, cv2.COLOR_BGR2RGB)
+        converted_frame_one = cv2.normalize(converted_frame_one, None, 0, 1, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+        print(converted_frame_one)
 
         # TODO: not implementing ground truth at the moment.
 
         ground_truth_file = '0'
         image_size = frame_one.shape
-        new_image_size = (image_size[0] * 2, image_size[1] * 2)
+        
+        # MUST BE REVERSED FOR OPENCV STUFF
+        new_image_size = (image_size[1] * 2, image_size[0] * 2)
+        print("New Image Size:", new_image_size)
+
+        fps = vidcap.get(cv2.CAP_PROP_FPS)
+        print("Video FPS:", fps)
 
         # TODO: not implementing kernels at the moment.
 
-        # Numeric kernel files need to be like the input file with serial number
-        # kernel_files = ['%s_%d.mat;' % (input_file[:-4], ind) for ind in range(len(conf.scale_factors))]
-        # kernel_files_str = ''.join(kernel_files)
-        # for kernel_file in kernel_files:
-        #     if not os.path.isfile(kernel_file[:-1]):
-        #         kernel_files_str = '0'
-        #         print('no kernel loaded')
-        #         break
+        # TODO: clustering for scene detection (?)
+        # or use final_test() to check if you need to retrain the net.
 
         kernel_files_str = '0'
-        net = run_ZSSR_single_input.main(coverted_frame_one, ground_truth_file, kernel_files_str, gpu, conf, res_dir)
+        net = run_ZSSR_single_input.main(converted_frame_one, ground_truth_file, kernel_files_str, gpu, conf, res_dir)
 
-        video_name = input_file[:-4] + "_2x2." + "mp4"
-        fourcc = cv2.VideoWriter_fourcc(*'MP4V')
-        # not sure what 20.0 is.
-        new_vid = cv2.VideoWriter(video_name, fourcc, 20.0, new_image_size)
+        video_name = input_file[:-4] + "_2x2" + ".mp4"
+        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+
+        new_vid = cv2.VideoWriter(video_name, fourcc, fps, new_image_size)
 
         count = 0
         image = None
@@ -89,15 +89,18 @@ def main(conf_name, gpu):
             image = cv2.normalize(image, None, 0, 1, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-            print('Inference on Frame: ', count)
-
             # have to figure out how to do this
             # I think we have to use forward_pass() in ZSSR.py, but not sure.
             scaled_image = net.forward_pass(image)
 
+            print('Inference on Frame: ', count, scaled_image.shape)
+
+            if count % 100 == 0:
+                print(scaled_image)
+
             # convert to something we can add to new_vid
             scaled_image = cv2.normalize(scaled_image, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-            scaled_image = cv2.cvtColor(scaled_image, cv2.COLOR_RGB_BGR)
+            scaled_image = cv2.cvtColor(scaled_image, cv2.COLOR_RGB2BGR)
 
             # writing to new video
             new_vid.write(scaled_image)
